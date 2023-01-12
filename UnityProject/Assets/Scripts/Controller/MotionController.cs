@@ -12,11 +12,15 @@ public class MotionController : MonoBehaviour
     void Start()
     {
         if (roadRTs.Length != 2) Debug.LogError("number of referenced road instances must be 2");
+        isMoving = true;
     }
 
     private void Update()
     {
+        if (isMoving)
+        {
 
+        }
     }
 
     public void StartingDisplay()
