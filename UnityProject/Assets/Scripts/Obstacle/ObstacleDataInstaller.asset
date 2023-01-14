@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2df6cf615df8e049ad723d5b97a1af1, type: 3}
+  m_Name: ObstacleDataInstaller
+  m_EditorClassIdentifier: 
+  obstacles:
+  - <prefab>k__BackingField: {fileID: 5005932909124445173, guid: c725a77c22d6c524fb9abd3116fa800e,
+      type: 3}
+    <rotationRange>k__BackingField: {x: 0, y: 60}
+    <size>k__BackingField: {x: 85, y: 55}
+  - <prefab>k__BackingField: {fileID: 6560820824714574307, guid: 47b303aedaf54094086a0bb62ca2ad7f,
+      type: 3}
+    <rotationRange>k__BackingField: {x: -20, y: 20}
+    <size>k__BackingField: {x: 110, y: 25}
+  - <prefab>k__BackingField: {fileID: 1898019922723100079, guid: aa94631d589f87b40bbd62cead806607,
+      type: 3}
+    <rotationRange>k__BackingField: {x: -20, y: 20}
+    <size>k__BackingField: {x: 25, y: 115}
