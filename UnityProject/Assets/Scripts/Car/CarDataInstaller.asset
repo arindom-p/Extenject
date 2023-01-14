@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab8bac8468b1a004798728c0ad1ec337, type: 3}
+  m_Name: CarDataInstaller
+  m_EditorClassIdentifier: 
+  cars:
+  - <sprite>k__BackingField: {fileID: 21300000, guid: d32b54c5a6a17d14894c2e36cde2fa11,
+      type: 3}
+    <initialSpeed>k__BackingField: 40
+    <acceleration>k__BackingField: 5
+  - <sprite>k__BackingField: {fileID: 21300000, guid: 904bc351a304f2c47ba8bf71c2a87900,
+      type: 3}
+    <initialSpeed>k__BackingField: 60
+    <acceleration>k__BackingField: 8

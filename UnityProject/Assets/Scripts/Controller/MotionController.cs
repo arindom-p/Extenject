@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using Zenject;
 
 public class MotionController : MonoBehaviour
 {
@@ -7,14 +8,20 @@ public class MotionController : MonoBehaviour
     [SerializeField] private Transform obstacleParent;
 
     private RectTransform ownRt;
+    private ICarProperties carProperties;
+    private CarData currentCarData;
     private readonly int resetDistance = 10000;
     private int roadImageId;
     private float roadHeight,
-        currentDistance,
-        currentSpeed,
-        acceleration;
+        currentDistance;
     private bool isMoving = false;
     private Dictionary<int, Vector3> positionCacheDic = new Dictionary<int, Vector3>();
+
+    [Inject]
+    private void Construct(ICarProperties carProperties)
+    {
+        this.carProperties = carProperties;
+    }
 
     void Start()
     {
@@ -22,7 +29,7 @@ public class MotionController : MonoBehaviour
         roadHeight = roadRTs[0].sizeDelta.y;
         ownRt = GetComponent<RectTransform>();
 
-        StartMoving();
+        Invoke(nameof(StartMoving), 1);
     }
 
     private void Update()
@@ -36,15 +43,13 @@ public class MotionController : MonoBehaviour
     public void StartMoving()
     {
         isMoving = true;
-        currentSpeed = 125;
-        acceleration = 10;
+        currentCarData = carProperties.currentCarData;
     }
 
     private void EvaluateMotion()
     {
         float dt = Time.deltaTime;
-        currentSpeed += dt * acceleration;
-        currentDistance += dt * currentSpeed;
+        currentDistance += dt * carProperties.currentCarSpeed;
         if (currentDistance > resetDistance)
         {
             PerformActionOnActiveObstacles(true);

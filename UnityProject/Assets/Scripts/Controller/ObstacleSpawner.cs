@@ -33,7 +33,7 @@ public class ObstacleSpawner : MonoBehaviour
         int ind = Random.Range(0, obstacles.Length);
         ObstacleData obstacleData = obstacles[ind];
         float rotationZ = Random.Range(obstacleData.rotationRange.x, obstacleData.rotationRange.y);
-        float dummy = (GameData.RoadWidth - obstacleData.size.x) / 2;
+        float dummy = (Helper.RoadWidth - obstacleData.size.x) / 2;
         float positionX = Random.Range(-dummy, dummy);
         Transform t = GetObstacleFromPool(ind);
         t.eulerAngles = rotationZ * Vector3.forward;

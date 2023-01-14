@@ -1,39 +1,66 @@
 ﻿using UnityEngine;
 using DG.Tweening;
 using Zenject;
+using System;
 
 public class CarController : MonoBehaviour, ICarProperties
 {
     /// <summary> Defines if the race started </summary>
-    private bool isMoving = false;
-    private int _currentCarId;
+    private bool isMoving = false,
+        tweeningRotation = false;
+    private float carPosLimitX;
     private RectTransform ownRt;
     private CarData[] cars;
-    private Vector2 carSize;
+    private Vector3 cachedCarPos; // just to make easy to set car position
 
     #region From interface
-    int ICarProperties.currentCarId { get => _currentCarId; set { _currentCarId = value;} }
-    CarData ICarProperties.currentCarData { get => cars[_currentCarId]; set { } }
-    float ICarProperties.currentCarSpeed { get; set; }
+    #region Helping veriables those should not be used from anywere except this implement
+    private int _currentCarId = 0;
+    private CarData _currentCarData;
+    #endregion
+    public int currentCarId
+    {
+        get => _currentCarId;
+        private set
+        {
+            _currentCarId = value;
+            _currentCarData = cars[_currentCarId];
+        }
+    }
+    public CarData currentCarData
+    {
+        get => _currentCarData;
+    }
+    public float currentCarSpeed { get; private set; }
     #endregion
 
     [Inject]
     public void Construct(CarData[] cars)
     {
         this.cars = cars;
+
+        currentCarId = 0; //just to initialize
     }
 
     void Start()
     {
         ownRt = GetComponent<RectTransform>();
-        carSize = ownRt.sizeDelta;
+        carPosLimitX = Helper.RoadWidth - ownRt.sizeDelta.x;
+        StartRace();
+    }
+
+    private void StartRace()
+    {
         isMoving = true;
+        currentCarSpeed = currentCarData.initialSpeed;
+        cachedCarPos = ownRt.localPosition;
     }
 
     void Update()
     {
         if (isMoving)
         {
+            currentCarSpeed += Time.deltaTime * currentCarData.acceleration;
             SetCurrentFrameProperty();
         }
     }
@@ -51,7 +78,41 @@ public class CarController : MonoBehaviour, ICarProperties
 
     private void SetCurrentFrameProperty()
     {
+        float dt = Time.deltaTime;
         float inputVal = GetInput();
-
+        float currentRotZ = ownRt.eulerAngles.z;
+        if (inputVal != 0)
+        {
+            { // handling rotation
+                if (tweeningRotation)
+                {
+                    tweeningRotation = false;
+                    DOTween.Kill(ownRt);
+                }
+                float res = currentRotZ - inputVal;
+                if (res < 0) res += 360;
+                if (res > 180) res = Mathf.Clamp(res, 360 - Helper.MaxCarRotateLimit, 360);
+                else res = Mathf.Clamp(res, 0, Helper.MaxCarRotateLimit);
+                ownRt.eulerAngles = res * Vector3.forward;
+            }
+            { // handling position
+                float targetPosX = ownRt.localPosition.x + dt * 1f * inputVal * currentCarSpeed;
+                targetPosX = Mathf.Clamp(targetPosX, -carPosLimitX, carPosLimitX);
+                cachedCarPos.x = targetPosX;
+                ownRt.localPosition = cachedCarPos;
+            }
+        }
+        else if (currentRotZ != 0 && !tweeningRotation)
+        {
+            { // handling rotation to follow forward
+                tweeningRotation = true;
+                float targetRot = currentRotZ < 180 ? 0 : 360;
+                float t = Math.Abs(targetRot - currentRotZ) / 180;
+                ownRt.DORotate(targetRot * Vector3.forward, t).SetEase(Ease.Linear).OnComplete(() =>
+                {
+                    tweeningRotation = false;
+                });
+            }
+        }
     }
 }

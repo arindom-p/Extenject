@@ -15,7 +15,7 @@ public class CarDataInstaller : ScriptableObjectInstaller<CarDataInstaller>
 [System.Serializable]
 public class CarData
 {
-    [field: SerializeField] public GameObject prefab { get; private set; }
+    [field: SerializeField] public Sprite sprite { get; private set; }
     [field: SerializeField] public float initialSpeed { get; private set; }
     [field: SerializeField] public float acceleration { get; private set; }
 }
