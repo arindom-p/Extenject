@@ -26,6 +26,11 @@ public class ObstacleSpawner : MonoBehaviour
         }
     }
 
+    public void OnRaceStart()
+    {
+        CollectAllObstacles();
+    }
+
     public void SpawnObstacle()
     {
         int ind = Random.Range(0, obstacles.Length);
@@ -44,16 +49,31 @@ public class ObstacleSpawner : MonoBehaviour
         if (idleObstacles[ind].Count == 0)
         {
             t = Instantiate(obstacles[ind].prefab, ownTransform).transform;
+            obstaclesTypeDictionary[t] = ind;
         }
         else
         {
-            t = (Transform)idleObstacles[ind].Pop();
+            t = (Transform) idleObstacles[ind].Pop();
             t.gameObject.gameObject.SetActive(true);
         }
         return t;
     }
 
-    private void MakeObstacleIdle(Transform t)
+    private void CollectAllObstacles()
+    {
+        Transform t;
+        int len = ownTransform.childCount;
+        for(int i = 0; i < len; i++)
+        {
+            t = ownTransform.GetChild(i);
+            if (t.gameObject.activeSelf)
+            {
+                MakeObstacleIdle(t);
+            }
+        }
+    }
+
+    public void MakeObstacleIdle(Transform t)
     {
         t.gameObject.SetActive(false);
         idleObstacles[obstaclesTypeDictionary[t]].Push(t);

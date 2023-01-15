@@ -57,8 +57,8 @@ public class CarController : MonoBehaviour, ICarProperties
 
         isMoving = true;
         currentCarSpeed = currentCarData.initialSpeed;
-        cachedCarPos = ownRt.localPosition;
         carImage.sprite = currentCarData.sprite;
+        cachedCarPos = ownRt.localPosition;
     }
 
     public void OnRaceEnd()
@@ -76,9 +76,9 @@ public class CarController : MonoBehaviour, ICarProperties
         }
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        print("this is collided");
+        OnRaceEnd();
     }
 
     private float GetInput()

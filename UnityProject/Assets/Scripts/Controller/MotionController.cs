@@ -1,19 +1,24 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 public class MotionController : MonoBehaviour
 {
     [SerializeField] private RectTransform[] roadRTs;
     [SerializeField] private Transform obstacleParent;
+    [SerializeField] private Text scoreText;
 
     private RectTransform ownRt;
     private ICarProperties carProperties;
-    private CarData currentCarData;
     private readonly int resetDistance = 10000;
-    private int roadImageId;
+    private readonly float scoreChangeTimeInterval = 0.2f;
+    private int roadImageId,
+        currentScore;
     private float roadHeight,
-        currentDistance;
+        currentDistance,
+        timeTrack,
+        remainingTimeToSpawnObstacle;
     private bool isMoving = false;
     private Dictionary<int, Vector3> positionCacheDic = new Dictionary<int, Vector3>();
     private SignalBus signalBus;
@@ -43,7 +48,9 @@ public class MotionController : MonoBehaviour
     public void OnRaceStart()
     {
         isMoving = true;
-        currentCarData = carProperties.currentCarData;
+        currentScore = 0;
+        timeTrack = 0;
+        SetTimerForNextObstacle();
     }
 
     public void OnRaceEnd()
@@ -51,14 +58,33 @@ public class MotionController : MonoBehaviour
         isMoving = false;
     }
 
+    private void SetTimerForNextObstacle()
+    {
+        remainingTimeToSpawnObstacle = 2;//carProperties.currentCarSpeed / 100;
+    }
+
     private void EvaluateMotion()
     {
         float dt = Time.deltaTime;
+        { // score
+            timeTrack += dt;
+            if (timeTrack > scoreChangeTimeInterval)
+            {
+                timeTrack -= scoreChangeTimeInterval;
+                currentScore += (int) carProperties.currentCarSpeed;
+                scoreText.text = (currentScore / 100).ToString();
+            }
+        }
+        { // obstacle spawning timer
+            remainingTimeToSpawnObstacle -= dt;
+            if (remainingTimeToSpawnObstacle <= 0)
+            {
+                SetTimerForNextObstacle();
+                signalBus.Fire(new SpawnObstacleSignal());
+            }
+        }
+
         currentDistance += dt * carProperties.currentCarSpeed;
-        //if (currentDistance and something)
-        //{
-        //    signalBus.Fire(new SpawnCollidedSignal());
-        //}
         if (currentDistance > resetDistance)
         {
             PerformActionOnActiveObstacles(true);

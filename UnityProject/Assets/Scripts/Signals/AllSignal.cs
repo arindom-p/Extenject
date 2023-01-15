@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class MatchStartedSignal
 {
     public readonly int carIndex;
@@ -9,4 +11,13 @@ public class MatchStartedSignal
 
 public class GameEndedSignal { }
 
-public class SpawnCollidedSignal { }
+public class SpawnObstacleSignal { }
+
+public class CollectObstacle
+{
+    public readonly Transform t;
+    public CollectObstacle(Transform t)
+    {
+        this.t = t;
+    }
+}

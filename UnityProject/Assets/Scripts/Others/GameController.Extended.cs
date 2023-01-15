@@ -41,15 +41,15 @@ public partial class GameController
         carSpeedBarImage.DOFillAmount(0, halfTime);
         carAccelerationBarImage.DOFillAmount(0, halfTime).OnComplete(() =>
         {
-            carSpeedBarImage.DOFillAmount(cars[displayCarIndex].initialSpeed / 100, halfTime);
-            carAccelerationBarImage.DOFillAmount(cars[displayCarIndex].acceleration / 50, halfTime);
+            carSpeedBarImage.DOFillAmount(cars[displayCarIndex].initialSpeed / 200, halfTime);
+            carAccelerationBarImage.DOFillAmount(cars[displayCarIndex].acceleration / 30, halfTime);
         });
     }
 
     private void ShowInitialScoreText()
     {
-        otherPanelsObj.GetComponent<Image>().color = Color.clear;
-        otherPanelsObj.SetActive(true);
+        popupPanelObj.GetComponent<Image>().color = Color.clear;
+        popupPanelObj.SetActive(true);
         scoreText.gameObject.SetActive(true);
         scoreText.text = "0";
         scoreText.fontSize = 30;
@@ -58,14 +58,15 @@ public partial class GameController
 
     private void AnimateScorePanel()
     {
+        float animationDuration = 0.8f;
         restartButton.interactable = false;
         backToLobbyButton.interactable = false;
-        otherPanelsObj.GetComponent<Image>().color = (new Vector4(0, 0, 0, 0.5f));
-        Helper.FadeObjectView(otherPanelsObj, scorePanelObj, true);
+        popupPanelObj.GetComponent<Image>().color = (new Vector4(0, 0, 0, 0.5f));
+        Helper.FadeObjectView(popupPanelObj, scorePanelObj, true);
 
-        scoreText.transform.DOMove(scoreTextTargetOnScorePanelTransform.position, Helper.PanelFadingDuration);
+        scoreText.transform.DOMove(scoreTextTargetOnScorePanelTransform.position, animationDuration);
         int val = 30, endSize = 50;
-        DOTween.To(() => val, x => val = x, endSize, Helper.PanelFadingDuration).OnUpdate(() =>
+        DOTween.To(() => val, x => val = x, endSize, animationDuration).OnUpdate(() =>
         {
             scoreText.fontSize = val;
         }).OnComplete(() =>

@@ -15,9 +15,9 @@ MonoBehaviour:
   cars:
   - <sprite>k__BackingField: {fileID: 21300000, guid: d32b54c5a6a17d14894c2e36cde2fa11,
       type: 3}
-    <initialSpeed>k__BackingField: 40
-    <acceleration>k__BackingField: 5
+    <initialSpeed>k__BackingField: 100
+    <acceleration>k__BackingField: 15
   - <sprite>k__BackingField: {fileID: 21300000, guid: 904bc351a304f2c47ba8bf71c2a87900,
       type: 3}
-    <initialSpeed>k__BackingField: 60
-    <acceleration>k__BackingField: 8
+    <initialSpeed>k__BackingField: 150
+    <acceleration>k__BackingField: 20

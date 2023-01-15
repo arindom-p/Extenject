@@ -1,4 +1,4 @@
-#if !NOT_UNITY3D
+//#if !NOT_UNITY3D
 
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -69,4 +69,4 @@ namespace Zenject
     }
 }
 
-#endif
+//#endif

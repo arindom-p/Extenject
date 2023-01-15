@@ -122,6 +122,7 @@ public partial class GameController : MonoBehaviour
     {
         Helper.FadeObjectView(otherPanelsObj, carSelectionPenlObj, false);
         Helper.FadeObjectView(gameCanvasObj, gamePanelObj, true);
+        lobbyPanelObj.SetActive(false);
         ShowInitialScoreText();
         signalBus.Fire(new MatchStartedSignal(displayCarIndex));
     }
@@ -141,7 +142,7 @@ public partial class GameController : MonoBehaviour
     private void OnPressedBackToLobbyButton()
     {
         Helper.FadeObjectView(popupPanelObj, scorePanelObj, false);
-        Helper.FadeObjectView(uiCanvasObj, lobbyPanelObj, true, callback: OnPressedBackToLobbyButton);
+        Helper.FadeObjectView(uiCanvasObj, lobbyPanelObj, true, callback: CommonLobbyAction);
     }
 
     public void OnRaceEnd()
