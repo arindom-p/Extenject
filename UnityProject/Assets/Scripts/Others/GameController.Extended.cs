@@ -45,4 +45,33 @@ public partial class GameController
             carAccelerationBarImage.DOFillAmount(cars[displayCarIndex].acceleration / 50, halfTime);
         });
     }
+
+    private void ShowInitialScoreText()
+    {
+        otherPanelsObj.GetComponent<Image>().color = Color.clear;
+        otherPanelsObj.SetActive(true);
+        scoreText.gameObject.SetActive(true);
+        scoreText.text = "0";
+        scoreText.fontSize = 30;
+        scoreText.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+    }
+
+    private void AnimateScorePanel()
+    {
+        restartButton.interactable = false;
+        backToLobbyButton.interactable = false;
+        otherPanelsObj.GetComponent<Image>().color = (new Vector4(0, 0, 0, 0.5f));
+        Helper.FadeObjectView(otherPanelsObj, scorePanelObj, true);
+
+        scoreText.transform.DOMove(scoreTextTargetOnScorePanelTransform.position, Helper.PanelFadingDuration);
+        int val = 30, endSize = 50;
+        DOTween.To(() => val, x => val = x, endSize, Helper.PanelFadingDuration).OnUpdate(() =>
+        {
+            scoreText.fontSize = val;
+        }).OnComplete(() =>
+        {
+            restartButton.interactable = true;
+            backToLobbyButton.interactable = true;
+        });
+    }
 }

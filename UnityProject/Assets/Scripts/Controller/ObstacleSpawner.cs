@@ -24,11 +24,9 @@ public class ObstacleSpawner : MonoBehaviour
         {
             idleObstacles[i] = new Stack();
         }
-
-        Invoke(nameof(SpawnObstacle), 3);
     }
 
-    private void SpawnObstacle()
+    public void SpawnObstacle()
     {
         int ind = Random.Range(0, obstacles.Length);
         ObstacleData obstacleData = obstacles[ind];

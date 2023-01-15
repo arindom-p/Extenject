@@ -4967,6 +4967,8 @@ MonoBehaviour:
   - {fileID: 984263682}
   carSpeedBarImage: {fileID: 1259033737}
   carAccelerationBarImage: {fileID: 888505873}
+  scoreText: {fileID: 1623993756}
+  scoreTextTargetOnScorePanelTransform: {fileID: 698275338}
 --- !u!4 &2011923139
 Transform:
   m_ObjectHideFlags: 0

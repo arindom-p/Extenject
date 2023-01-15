@@ -5,6 +5,7 @@ using System;
 
 public class CarController : MonoBehaviour, ICarProperties
 {
+    [SerializeField] private UnityEngine.UI.Image carImage;
     /// <summary> Defines if the race started </summary>
     private bool isMoving = false,
         tweeningRotation = false;
@@ -12,6 +13,7 @@ public class CarController : MonoBehaviour, ICarProperties
     private RectTransform ownRt;
     private CarData[] cars;
     private Vector3 cachedCarPos; // just to make easy to set car position
+    private SignalBus signalBus;
 
     #region From interface
     #region Helping veriables those should not be used from anywere except this implement
@@ -35,9 +37,10 @@ public class CarController : MonoBehaviour, ICarProperties
     #endregion
 
     [Inject]
-    public void Construct(CarData[] cars)
+    public void Construct(CarData[] cars, SignalBus signalBus)
     {
         this.cars = cars;
+        this.signalBus = signalBus;
 
         currentCarId = 0; //just to initialize
     }
@@ -46,23 +49,36 @@ public class CarController : MonoBehaviour, ICarProperties
     {
         ownRt = GetComponent<RectTransform>();
         carPosLimitX = Helper.RoadWidth - ownRt.sizeDelta.x;
-        StartRace();
     }
 
-    private void StartRace()
+    public void OnRaceStart(int carIndex)
     {
+        currentCarId = carIndex;
+
         isMoving = true;
         currentCarSpeed = currentCarData.initialSpeed;
         cachedCarPos = ownRt.localPosition;
+        carImage.sprite = currentCarData.sprite;
     }
 
-    void Update()
+    public void OnRaceEnd()
+    {
+        isMoving = false;
+        signalBus.Fire(new GameEndedSignal());
+    }
+
+    private void Update()
     {
         if (isMoving)
         {
             currentCarSpeed += Time.deltaTime * currentCarData.acceleration;
             SetCurrentFrameProperty();
         }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        print("this is collided");
     }
 
     private float GetInput()

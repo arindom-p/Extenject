@@ -16,20 +16,20 @@ public class MotionController : MonoBehaviour
         currentDistance;
     private bool isMoving = false;
     private Dictionary<int, Vector3> positionCacheDic = new Dictionary<int, Vector3>();
+    private SignalBus signalBus;
 
     [Inject]
-    private void Construct(ICarProperties carProperties)
+    private void Construct(ICarProperties carProperties, SignalBus signalBus)
     {
         this.carProperties = carProperties;
+        this.signalBus = signalBus;
     }
 
-    void Start()
+    private void Start()
     {
         if (roadRTs.Length != 2) Debug.LogError("number of referenced road instances must be 2");
-        roadHeight = roadRTs[0].sizeDelta.y;
         ownRt = GetComponent<RectTransform>();
-
-        Invoke(nameof(StartMoving), 1);
+        roadHeight = roadRTs[0].sizeDelta.y;
     }
 
     private void Update()
@@ -40,16 +40,25 @@ public class MotionController : MonoBehaviour
         }
     }
 
-    public void StartMoving()
+    public void OnRaceStart()
     {
         isMoving = true;
         currentCarData = carProperties.currentCarData;
+    }
+
+    public void OnRaceEnd()
+    {
+        isMoving = false;
     }
 
     private void EvaluateMotion()
     {
         float dt = Time.deltaTime;
         currentDistance += dt * carProperties.currentCarSpeed;
+        //if (currentDistance and something)
+        //{
+        //    signalBus.Fire(new SpawnCollidedSignal());
+        //}
         if (currentDistance > resetDistance)
         {
             PerformActionOnActiveObstacles(true);

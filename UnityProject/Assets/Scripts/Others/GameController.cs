@@ -30,17 +30,19 @@ public partial class GameController : MonoBehaviour
     [SerializeField]
     private Image carSpeedBarImage,
         carAccelerationBarImage;
+    [SerializeField] private Text scoreText;
+    [SerializeField] private Transform scoreTextTargetOnScorePanelTransform;
 
-    private MatchStartedSignal matchStartedSignal;
+    private SignalBus signalBus;
 
     private int displayCarIndex;
     private CarData[] cars;
 
     [Inject]
-    private void Construct(CarData[] cars, MatchStartedSignal matchStartedSignal)
+    private void Construct(CarData[] cars, SignalBus signalBus)
     {
         this.cars = cars;
-        this.matchStartedSignal = matchStartedSignal;
+        this.signalBus = signalBus;
     }
 
     private void Start()
@@ -120,7 +122,8 @@ public partial class GameController : MonoBehaviour
     {
         Helper.FadeObjectView(otherPanelsObj, carSelectionPenlObj, false);
         Helper.FadeObjectView(gameCanvasObj, gamePanelObj, true);
-        matchStartedSignal.Fire(displayCarIndex);
+        ShowInitialScoreText();
+        signalBus.Fire(new MatchStartedSignal(displayCarIndex));
     }
 
     private void OnPressedCommonBackButton()
@@ -131,12 +134,18 @@ public partial class GameController : MonoBehaviour
 
     private void OnPressedRestartButton()
     {
-
+        scorePanelObj.SetActive(false);
+        OnPressedCarSelectButton();
     }
 
     private void OnPressedBackToLobbyButton()
     {
         Helper.FadeObjectView(popupPanelObj, scorePanelObj, false);
         Helper.FadeObjectView(uiCanvasObj, lobbyPanelObj, true, callback: OnPressedBackToLobbyButton);
+    }
+
+    public void OnRaceEnd()
+    {
+        AnimateScorePanel();
     }
 }
