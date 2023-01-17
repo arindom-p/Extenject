@@ -13,6 +13,6 @@ public class OutsideScreenObstacleCollector : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        signalBus.Fire(new CollectObstacle(collision.transform));
+        signalBus.Fire(new CollectObstacle(collision.GetComponent<Obstacle>()));
     }
 }

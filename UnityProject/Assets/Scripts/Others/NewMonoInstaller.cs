@@ -39,8 +39,10 @@ public class NewMonoInstaller : MonoInstaller
 
         Container.DeclareSignal<CollectObstacle>();
         Container.BindSignal<CollectObstacle>()
-            .ToMethod<ObstacleSpawner>((refInstance, sigInstance) => refInstance.MakeObstacleIdle(sigInstance.t))
+            .ToMethod<ObstacleSpawner>((refInstance, sigInstance) => refInstance.MakeObstacleIdle(sigInstance.obstacle))
             .FromResolve();
         #endregion
+
+        Container.BindFactory<UnityEngine.GameObject, Obstacle, Obstacle.Factory>().FromFactory<ObstacleFactory>();
     }
 }

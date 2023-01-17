@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4184946919103209180}
   - component: {fileID: 6147512468407441424}
+  - component: {fileID: -8440304180189157295}
   m_Layer: 5
   m_Name: Obstacle_Stone
   m_TagString: Untagged
@@ -59,6 +60,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 85, y: 55}
   m_EdgeRadius: 0
+--- !u!114 &-8440304180189157295
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5005932909124445173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7063891f91685ab44a6785fde70fad7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5105679967168173848
 GameObject:
   m_ObjectHideFlags: 0

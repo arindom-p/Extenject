@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8326263522468442437}
   - component: {fileID: 4800334484186870950}
+  - component: {fileID: 4075395463669037679}
   m_Layer: 5
   m_Name: Obstacle_ConeH
   m_TagString: Untagged
@@ -62,6 +63,18 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 110, y: 25}
   m_EdgeRadius: 0
+--- !u!114 &4075395463669037679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6560820824714574307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7063891f91685ab44a6785fde70fad7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &554946830768593751
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -15,9 +15,9 @@ public class SpawnObstacleSignal { }
 
 public class CollectObstacle
 {
-    public readonly Transform t;
-    public CollectObstacle(Transform t)
+    public readonly Obstacle obstacle;
+    public CollectObstacle(Obstacle obstacle)
     {
-        this.t = t;
+        this.obstacle = obstacle;
     }
 }

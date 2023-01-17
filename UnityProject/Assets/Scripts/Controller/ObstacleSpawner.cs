@@ -7,14 +7,16 @@ public class ObstacleSpawner : MonoBehaviour
 {
     [SerializeField] private Transform obstacleSpawningPosTransform;
     private Transform ownTransform;
-    private ObstacleData[] obstacles;
+    private Obstacle.Factory obstacleFectory;
+    private ObstacleData[] obstacleTypeData;
     private Stack[] idleObstacles = new Stack[3];
-    private Dictionary<Transform, int> obstaclesTypeDictionary = new Dictionary<Transform, int>();
+    private Dictionary<Obstacle, int> obstaclesTypeDictionary = new Dictionary<Obstacle, int>();
 
     [Inject]
-    public void Construct(ObstacleData[] obstacles)
+    public void Construct(ObstacleData[] obstacleTypeData, Obstacle.Factory obstacleFactory)
     {
-        this.obstacles = obstacles;
+        this.obstacleTypeData = obstacleTypeData;
+        this.obstacleFectory = obstacleFactory;
     }
 
     private void Start()
@@ -33,30 +35,34 @@ public class ObstacleSpawner : MonoBehaviour
 
     public void SpawnObstacle()
     {
-        int ind = Random.Range(0, obstacles.Length);
-        ObstacleData obstacleData = obstacles[ind];
+        int ind = Random.Range(0, obstacleTypeData.Length);
+        ObstacleData obstacleData = obstacleTypeData[ind];
         float rotationZ = Random.Range(obstacleData.rotationRange.x, obstacleData.rotationRange.y);
         float dummy = (Helper.RoadWidth - obstacleData.size.x) / 2;
         float positionX = Random.Range(-dummy, dummy);
-        Transform t = GetObstacleFromPool(ind);
-        t.eulerAngles = rotationZ * Vector3.forward;
+        Obstacle obstacle = GetObstacleFromPool(ind);
+        Transform t = obstacle.transform;
         t.localPosition = positionX * Vector3.right + ownTransform.InverseTransformPoint(obstacleSpawningPosTransform.position).y * Vector3.up;
+        t.eulerAngles = rotationZ * Vector3.forward;
     }
 
-    private Transform GetObstacleFromPool(int ind)
+    private Obstacle GetObstacleFromPool(int ind)
     {
-        Transform t;
+        Obstacle obstacle;
         if (idleObstacles[ind].Count == 0)
         {
-            t = Instantiate(obstacles[ind].prefab, ownTransform).transform;
-            obstaclesTypeDictionary[t] = ind;
+            obstacle = obstacleFectory.Create(obstacleTypeData[ind].prefab);
+            Transform t = obstacle.transform;
+            t.parent = ownTransform;
+            t.localScale = Vector3.one;
+            obstaclesTypeDictionary[obstacle] = ind;
         }
         else
         {
-            t = (Transform) idleObstacles[ind].Pop();
-            t.gameObject.gameObject.SetActive(true);
+            obstacle = (Obstacle) idleObstacles[ind].Pop();
+            obstacle.gameObject.gameObject.SetActive(true);
         }
-        return t;
+        return obstacle;
     }
 
     private void CollectAllObstacles()
@@ -68,14 +74,14 @@ public class ObstacleSpawner : MonoBehaviour
             t = ownTransform.GetChild(i);
             if (t.gameObject.activeSelf)
             {
-                MakeObstacleIdle(t);
+                MakeObstacleIdle(t.GetComponent<Obstacle>());
             }
         }
     }
 
-    public void MakeObstacleIdle(Transform t)
+    public void MakeObstacleIdle(Obstacle obstacle)
     {
-        t.gameObject.SetActive(false);
-        idleObstacles[obstaclesTypeDictionary[t]].Push(t);
+        obstacle.gameObject.SetActive(false);
+        idleObstacles[obstaclesTypeDictionary[obstacle]].Push(obstacle);
     }
 }
