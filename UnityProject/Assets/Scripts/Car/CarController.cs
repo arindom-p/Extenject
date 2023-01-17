@@ -71,7 +71,10 @@ public class CarController : MonoBehaviour, ICarProperties
     {
         if (isMoving)
         {
-            currentCarSpeed += Time.deltaTime * currentCarData.acceleration;
+            if (currentCarSpeed < Helper.MaxSpeedLimit)
+            {
+                currentCarSpeed = Math.Min(Helper.MaxSpeedLimit, currentCarSpeed + Time.deltaTime * currentCarData.acceleration);
+            }
             SetCurrentFrameProperty();
         }
     }

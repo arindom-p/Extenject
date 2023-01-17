@@ -4,6 +4,7 @@ using UnityEngine;
 public static class Helper
 {
     public const float RoadWidth = 170;
+    public const float MaxSpeedLimit = 1200;
     public const float MaxCarRotateLimit = 20;
     public const float PanelFadingDuration = 0.15f;
     public const float CarImageTransitionDuration = 0.4f;
