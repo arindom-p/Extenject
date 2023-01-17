@@ -85,14 +85,16 @@ public class MotionController : MonoBehaviour
         }
 
         currentDistance += dt * carProperties.currentCarSpeed;
+        bool repos = false;
         if (currentDistance > resetDistance)
         {
+            repos= true;
             PerformActionOnActiveObstacles(true);
             currentDistance %= roadHeight;
-            PerformActionOnActiveObstacles(false);
         }
         ownRt.anchoredPosition = currentDistance * Vector3.down;
         if ((int)(currentDistance / roadHeight) != roadImageId) SyncRoadImageId();
+        if (repos) PerformActionOnActiveObstacles(false);
     }
 
     private void SyncRoadImageId()
@@ -114,7 +116,7 @@ public class MotionController : MonoBehaviour
         for (int i= 0; i < n; i++)
         {
             t = obstacleParent.GetChild(i);
-            if (!t.gameObject.activeSelf)
+            if (t.gameObject.activeSelf)
             {
                 if (store)
                 {
