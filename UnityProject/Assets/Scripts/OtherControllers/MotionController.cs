@@ -60,7 +60,7 @@ public class MotionController : MonoBehaviour
 
     private void SetTimerForNextObstacle()
     {
-        remainingTimeToSpawnObstacle = 2;//carProperties.currentCarSpeed / 100;
+        remainingTimeToSpawnObstacle = 1.5f;//carProperties.currentCarSpeed / 100;
     }
 
     private void EvaluateMotion()

@@ -3,7 +3,7 @@ using UnityEngine;
 
 public static class Helper
 {
-    public const float RoadWidth = 170;
+    public const float RoadWidth = 270;
     public const float MaxInitialSpeed = 350; // to show in progress bar
     public const float MaxAcceleration = 15; // to show in progress bar
     public const float MaxSpeedLimit = 1200;

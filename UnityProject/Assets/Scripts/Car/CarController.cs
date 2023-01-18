@@ -48,7 +48,7 @@ public class CarController : MonoBehaviour, ICarProperties
     void Start()
     {
         ownRt = GetComponent<RectTransform>();
-        carPosLimitX = Helper.RoadWidth - ownRt.sizeDelta.x;
+        carPosLimitX = (Helper.RoadWidth - ownRt.sizeDelta.x) / 2;
     }
 
     public void OnRaceStart(int carIndex)
