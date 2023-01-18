@@ -9,14 +9,17 @@ public class ObstacleSpawner : MonoBehaviour
     private Transform ownTransform;
     private Obstacle.Factory obstacleFectory;
     private ObstacleData[] obstacleTypeData;
-    private Stack[] idleObstacles = new Stack[3];
+    private Stack[] idleObstacles;
     private Dictionary<Obstacle, int> obstaclesTypeDictionary = new Dictionary<Obstacle, int>();
+    private int nextEdgeSideObstacle = 0;
 
     [Inject]
     public void Construct(ObstacleData[] obstacleTypeData, Obstacle.Factory obstacleFactory)
     {
         this.obstacleTypeData = obstacleTypeData;
         this.obstacleFectory = obstacleFactory;
+
+        idleObstacles = new Stack[obstacleTypeData.Length];
     }
 
     private void Start()
@@ -38,8 +41,8 @@ public class ObstacleSpawner : MonoBehaviour
         int ind = Random.Range(0, obstacleTypeData.Length);
         ObstacleData obstacleData = obstacleTypeData[ind];
         float rotationZ = Random.Range(obstacleData.rotationRange.x, obstacleData.rotationRange.y);
-        float dummy = (Helper.RoadWidth - obstacleData.size.x) / 2;
-        float positionX = Random.Range(-dummy, dummy);
+        float oneSideLength = (Helper.RoadWidth - obstacleData.size.x) / 2;
+        float positionX = Random.Range(-oneSideLength, oneSideLength);
         Obstacle obstacle = GetObstacleFromPool(ind);
         Transform t = obstacle.transform;
         t.localPosition = positionX * Vector3.right + ownTransform.InverseTransformPoint(obstacleSpawningPosTransform.position).y * Vector3.up;

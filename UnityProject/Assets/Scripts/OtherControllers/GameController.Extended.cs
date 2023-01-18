@@ -41,8 +41,8 @@ public partial class GameController
         carSpeedBarImage.DOFillAmount(0, halfTime);
         carAccelerationBarImage.DOFillAmount(0, halfTime).OnComplete(() =>
         {
-            carSpeedBarImage.DOFillAmount(cars[displayCarIndex].initialSpeed / 300, halfTime);
-            carAccelerationBarImage.DOFillAmount(cars[displayCarIndex].acceleration / 15, halfTime);
+            carSpeedBarImage.DOFillAmount(cars[displayCarIndex].initialSpeed / Helper.MaxInitialSpeed, halfTime);
+            carAccelerationBarImage.DOFillAmount(cars[displayCarIndex].acceleration / Helper.MaxAcceleration, halfTime);
         });
     }
 
